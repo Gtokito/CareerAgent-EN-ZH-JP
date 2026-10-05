@@ -54,7 +54,35 @@ DIRECT_EVIDENCE = {
         "japanese",
         "日文",
     ],
+    "python": [
+        "python",
+    ],
+    "自動化": [
+        "automation",
+        "automated",
+        "自動化",
+    ],
+    "治理": [
+        "governance",
+        "governor",
+        "治理",
+    ],
+    "雲端": [
+        "cloud",
+        "aws",
+        "google cloud",
+        "kubernetes",
+        "docker",
+        "雲端",
+    ],
+    "ai": [
+        "ai",
+        "agent",
+        "llm",
+        "machine learning",
+    ],
 }
+
 
 
 INDUSTRY_TERMS = {
@@ -78,14 +106,21 @@ BLOCKED_TERMS = [
 
 
 def load_knowledge():
-    return "\n".join(
-        path.read_text(encoding="utf-8")
-        for path in KNOWLEDGE.glob("*.md")
-    ).lower()
+    target_dir = KNOWLEDGE
+    source_label = "knowledge"
+    if not target_dir.exists() or not list(target_dir.glob("*.md")):
+        fallback = BASE / "examples" / "sample_profile"
+        if fallback.exists() and list(fallback.glob("*.md")):
+            target_dir = fallback
+            source_label = "examples/sample_profile (Fallback Demo)"
+
+    files = list(target_dir.glob("*.md"))
+    content = "\n".join(path.read_text(encoding="utf-8") for path in files).lower()
+    return content, source_label
 
 
 def match_candidate(jd):
-    knowledge = load_knowledge()
+    knowledge, source_label = load_knowledge()
     jd_text = jd.get("raw_text", "").lower()
 
     matched = []
@@ -113,6 +148,7 @@ def match_candidate(jd):
 
     return {
         "job_title": jd["job_title"],
+        "source": source_label,
         "matched_keywords": matched,
         "transferable_keywords": transferable,
         "unmatched_keywords": blocked,
@@ -120,4 +156,24 @@ def match_candidate(jd):
 
 
 if __name__ == "__main__":
-    print("Candidate Matcher: OK")
+    print("=" * 60)
+    print("🎯 Career Agent: Candidate Matcher Demo")
+    print("=" * 60)
+
+    demo_jd = {
+        "job_title": "Senior AI Platform & Automation Engineer",
+        "raw_text": "Seeking an engineer with strong verification, python standardization, english communication, and sop skills.",
+        "keywords": ["AI", "Python", "自動化", "雲端", "治理", "英文", "半導體"]
+    }
+
+
+    result = match_candidate(demo_jd)
+    print(f"📌 目標職缺: {result['job_title']}")
+    print(f"📂 候選人經歷庫: {result['source']}")
+    print("-" * 60)
+    print(f"✅ 精確匹配能力 (Matched):      {result['matched_keywords']}")
+    print(f"🔄 可轉移能力 (Transferable):  {result['transferable_keywords']}")
+    print(f"⛔ 阻擋/不可虛構 (Blocked):    {result['unmatched_keywords']}")
+    print("=" * 60)
+    print("✨ 匹配分析完成！開箱即用運作正常。")
+
