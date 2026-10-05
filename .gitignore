@@ -1,0 +1,28 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.class
+
+# Environments & Secrets (CRITICAL)
+.env
+*.env
+credentials.json
+token.json
+client_secret*.json
+
+# Outputs & Temporary artifacts
+output/
+runtime/
+audit/
+*.pdf
+*.docx
+*.png
+*.html
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
