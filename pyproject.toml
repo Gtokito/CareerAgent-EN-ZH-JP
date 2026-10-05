@@ -3,9 +3,9 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "career-agent"
+name = "career-agent-en-zh-jp"
 version = "1.0.0"
-description = "Automated Career Alignment & Resume Pipeline Engine"
+description = "Automated Multilingual Career Alignment & Strategic Resume Pipeline Engine"
 readme = "README.md"
 license = { text = "MIT" }
 requires-python = ">=3.9"
@@ -17,3 +17,7 @@ dependencies = [
     "google-auth-oauthlib>=1.0.0",
     "python-docx>=0.8.11",
 ]
+
+[project.urls]
+Homepage = "https://github.com/Gtokito/CareerAgent-EN-ZH-JP"
+Repository = "https://github.com/Gtokito/CareerAgent-EN-ZH-JP"
